@@ -17,9 +17,16 @@ typedef struct {
     int staminaPersa;
     int turniPerRecuperoStamina;
     int staminaRecuperata;
+    int sconfitto; // = -1;
     int turniFrammenti;
     int *frammentiPerTurno;
 } DEMON;
+
+int *CalcolaOrdine(
+    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali);
+int CalcolaFrammenti(
+    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali,
+    int *OrdineDemoni);
 
 int main(int argc, char **argv)
 {
@@ -55,6 +62,7 @@ int main(int argc, char **argv)
             &demoni[i].turniPerRecuperoStamina, &demoni[i].staminaRecuperata,
             &demoni[i].turniFrammenti);
 
+        demoni[i].sconfitto = -1;
         demoni[i].frammentiPerTurno =
             malloc(demoni[i].turniFrammenti * sizeof(int));
 
@@ -64,27 +72,119 @@ int main(int argc, char **argv)
 
     fclose(inputFile);
 
-    // Test Output
-    fprintf(stdout, "Numero turni: %d\n", turniTotali);
-    fprintf(
-        stdout,
-        "Pandora:\n\tStamina: %d\n\tStamina massima: %d\n\tFrammenti totali: "
-        "%d\n",
-        pandora.stamina, pandora.maxStamina, pandora.frammentiTotali);
-    fprintf(stdout, "Numero totale demoni: %d\n", totaleDemoni);
+    // Output
+    int *ordineFinale =
+        CalcolaOrdine(pandora, demoni, totaleDemoni, turniTotali);
 
-    for (int i = 0; i < totaleDemoni; i++) {
-        fprintf(
-            stdout,
-            "Demone %d:\n\tStamina persa:%d\n\tTurni per recuperare la "
-            "stamina:%d\n\tStamina recuperata:%d\n\tTurni per fraggmenti:%d\n",
-            i + 1, demoni[i].staminaPersa, demoni[i].turniPerRecuperoStamina,
-            demoni[i].staminaRecuperata, demoni[i].turniFrammenti);
+    FILE *outputFile = fopen("output.txt", "w");
 
-        free(demoni[i].frammentiPerTurno);
+    if (outputFile == NULL) {
+        fprintf(stderr, "Impossibile creare il file '%s'\n", "output.txt");
+        return -1;
     }
 
+    for (int i = 0; i < totaleDemoni; i++)
+        fprintf(outputFile, "%d\n", ordineFinale[i]);
+
+    fclose(outputFile);
+
+    // Punteggio
+    fprintf(
+        stdout, "Punteggio totale: %d frammenti recuperati\n",
+        CalcolaFrammenti(
+            pandora, demoni, totaleDemoni, turniTotali, ordineFinale));
+
+    for (int i = 0; i < totaleDemoni; i++)
+        free(demoni[i].frammentiPerTurno);
     free(demoni);
+    free(ordineFinale);
 
     return 0;
+}
+
+int *CalcolaOrdine(
+    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali)
+{
+    int *ordineFinale = malloc(DimDemoni * sizeof(int));
+
+    for (int i = 0; i < DimDemoni; i++)
+        ordineFinale[i] = i;
+
+    return ordineFinale;
+}
+
+// Turno ==> Recupero Stamina -> Attacco Demoni -> Prendi Frammenti
+int CalcolaFrammenti(
+    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali,
+    int *OrdineDemoni)
+{
+    FILE *log = fopen("log.txt", "w");
+    if (log == NULL) {
+        fprintf(stderr, "Impossibile aprire il file '%s'\n", "log.txt");
+        log = stdout;
+    }
+
+    int demoneDaSconfiggiere = 0;
+    int *demoniSconfitti =
+        calloc(DimDemoni, sizeof(int)); // 0 non sconfitto, 1 sconfitto
+
+    for (int turno = 0; turno < TurniTotali; turno++) {
+        fprintf(
+            log, "\nTurno %d. Pandora: Stamina %d, Frammenti %d\n", turno + 1,
+            Pandora.stamina, Pandora.frammentiTotali);
+
+        // Recupero Stamina
+        for (int i = 0; i < DimDemoni; i++)
+            if (demoniSconfitti[i]) {
+                int turniPassati = turno - Demoni[i].sconfitto;
+
+                if (turniPassati == Demoni[i].turniPerRecuperoStamina) {
+                    fprintf(
+                        log, "\tRecupero stamina %d\n",
+                        Demoni[i].staminaRecuperata);
+                    Pandora.stamina += Demoni[i].staminaRecuperata;
+
+                    if (Pandora.stamina >= Pandora.maxStamina)
+                        Pandora.stamina = Pandora.maxStamina;
+                }
+            }
+
+        // Attacco Demoni
+        if (demoneDaSconfiggiere < DimDemoni) {
+            int prossimoAttacco = OrdineDemoni[demoneDaSconfiggiere];
+
+            if (Pandora.stamina >= Demoni[prossimoAttacco].staminaPersa) {
+                // Attacco riuscito
+                fprintf(
+                    log, "\tAttacco su demone %d riuscito\n", prossimoAttacco);
+
+                Pandora.stamina -= Demoni[prossimoAttacco].staminaPersa;
+                Demoni[prossimoAttacco].sconfitto = turno;
+                demoniSconfitti[prossimoAttacco] = 1;
+                demoneDaSconfiggiere++;
+
+                fprintf(
+                    log, "\tStamina persa: %d\n",
+                    Demoni[prossimoAttacco].staminaPersa);
+            }
+        }
+
+        // Prendi Frammenti
+        for (int i = 0; i < DimDemoni; i++) {
+            if (demoniSconfitti[i]) {
+                int turniPassati = turno - Demoni[i].sconfitto;
+
+                if (turniPassati < Demoni[i].turniFrammenti) {
+                    fprintf(
+                        log, "\tPrendi %d frammenti dal demone %d\n",
+                        Demoni[i].frammentiPerTurno[turniPassati], i);
+
+                    Pandora.frammentiTotali +=
+                        Demoni[i].frammentiPerTurno[turniPassati];
+                }
+            }
+        }
+    }
+
+    return Pandora.frammentiTotali;
 }

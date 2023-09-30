@@ -1,0 +1,75 @@
+
+Turno 1. Pandora: Stamina 19, Frammenti 0
+	Attacco su demone 0 riuscito
+	Stamina persa: 16
+	Prendi 0 frammenti dal demone 0
+
+Turno 2. Pandora: Stamina 3, Frammenti 0
+	Attacco su demone 1 riuscito
+	Stamina persa: 2
+	Prendi 10 frammenti dal demone 0
+	Prendi 0 frammenti dal demone 1
+
+Turno 3. Pandora: Stamina 1, Frammenti 10
+	Recupero stamina 11
+	Attacco su demone 2 riuscito
+	Stamina persa: 3
+	Prendi 5 frammenti dal demone 0
+	Prendi 6 frammenti dal demone 1
+	Prendi 0 frammenti dal demone 2
+
+Turno 4. Pandora: Stamina 9, Frammenti 21
+	Recupero stamina 5
+	Attacco su demone 3 riuscito
+	Stamina persa: 7
+	Prendi 0 frammenti dal demone 0
+	Prendi 1 frammenti dal demone 1
+	Prendi 5 frammenti dal demone 2
+	Prendi 8 frammenti dal demone 3
+
+Turno 5. Pandora: Stamina 7, Frammenti 35
+	Recupero stamina 18
+	Attacco su demone 4 riuscito
+	Stamina persa: 17
+	Prendi 0 frammenti dal demone 0
+	Prendi 7 frammenti dal demone 1
+	Prendi 4 frammenti dal demone 2
+	Prendi 2 frammenti dal demone 3
+	Prendi 5 frammenti dal demone 4
+
+Turno 6. Pandora: Stamina 3, Frammenti 53
+	Prendi 7 frammenti dal demone 0
+	Prendi 3 frammenti dal demone 1
+	Prendi 5 frammenti dal demone 2
+	Prendi 5 frammenti dal demone 3
+	Prendi 1 frammenti dal demone 4
+
+Turno 7. Pandora: Stamina 3, Frammenti 74
+	Prendi 4 frammenti dal demone 0
+	Prendi 4 frammenti dal demone 1
+	Prendi 0 frammenti dal demone 2
+	Prendi 0 frammenti dal demone 3
+	Prendi 4 frammenti dal demone 4
+
+Turno 8. Pandora: Stamina 3, Frammenti 86
+	Prendi 1 frammenti dal demone 0
+	Prendi 7 frammenti dal demone 1
+	Prendi 10 frammenti dal demone 2
+	Prendi 0 frammenti dal demone 3
+	Prendi 5 frammenti dal demone 4
+
+Turno 9. Pandora: Stamina 3, Frammenti 109
+	Prendi 1 frammenti dal demone 0
+	Prendi 0 frammenti dal demone 1
+	Prendi 1 frammenti dal demone 2
+	Prendi 4 frammenti dal demone 3
+	Prendi 1 frammenti dal demone 4
+
+Turno 10. Pandora: Stamina 3, Frammenti 116
+	Recupero stamina 10
+	Recupero stamina 7
+	Prendi 6 frammenti dal demone 0
+	Prendi 5 frammenti dal demone 1
+	Prendi 8 frammenti dal demone 2
+	Prendi 3 frammenti dal demone 3
+	Prendi 8 frammenti dal demone 4
