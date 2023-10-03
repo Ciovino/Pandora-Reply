@@ -14,6 +14,7 @@ typedef struct {
 } PLAYER;
 
 typedef struct {
+    int idx;
     int staminaPersa;
     int turniPerRecuperoStamina;
     int staminaRecuperata;
@@ -23,7 +24,8 @@ typedef struct {
 } DEMON;
 
 int *CalcolaOrdine(
-    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali);
+    const PLAYER Pandora, const DEMON *Demoni, const int DimDemoni,
+    const int TurniTotali);
 int CalcolaFrammenti(
     PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali,
     int *OrdineDemoni);
@@ -62,6 +64,7 @@ int main(int argc, char **argv)
             &demoni[i].turniPerRecuperoStamina, &demoni[i].staminaRecuperata,
             &demoni[i].turniFrammenti);
 
+        demoni[i].idx = i;
         demoni[i].sconfitto = -1;
         demoni[i].frammentiPerTurno =
             malloc(demoni[i].turniFrammenti * sizeof(int));
@@ -102,14 +105,43 @@ int main(int argc, char **argv)
     return 0;
 }
 
-int *CalcolaOrdine(
-    PLAYER Pandora, DEMON *Demoni, int DimDemoni, int TurniTotali)
+int MinoreDi_Demon(DEMON A, DEMON B) { return A.staminaPersa < B.staminaPersa; }
+
+DEMON *OrdinaDemoni(DEMON *Demoni, int DimDemoni)
 {
+    int *daIgnorare = calloc(DimDemoni, sizeof(int));
+    DEMON *copia = malloc(DimDemoni * sizeof(*copia));
+
+    for (int count = 0; count < DimDemoni; count++) {
+        int min = -1;
+
+        for (int i = 0; i < DimDemoni; i++) {
+            if (daIgnorare[i]) continue;
+
+            if (min == -1 || MinoreDi_Demon(Demoni[i], Demoni[min])) min = i;
+        }
+
+        daIgnorare[min] = 1;
+        copia[count] = Demoni[min];
+    }
+
+    free(daIgnorare);
+    return copia;
+}
+
+int *CalcolaOrdine(
+    const PLAYER Pandora, const DEMON *Demoni, const int DimDemoni,
+    const int TurniTotali)
+{
+    // Setup: Ordina i demoni per stamina consumata
+    DEMON *CopiaDemoni = OrdinaDemoni(Demoni, DimDemoni);
+
     int *ordineFinale = malloc(DimDemoni * sizeof(int));
 
     for (int i = 0; i < DimDemoni; i++)
-        ordineFinale[i] = i;
+        ordineFinale[i] = CopiaDemoni[i].idx;
 
+    free(CopiaDemoni);
     return ordineFinale;
 }
 
