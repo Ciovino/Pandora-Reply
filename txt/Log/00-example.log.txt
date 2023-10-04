@@ -1,0 +1,63 @@
+Ordine di attacco: { 1 2 3 0 4 }
+
+Turno 1. Pandora: Stamina 5, Frammenti 0
+	Attacco su demone 1 riuscito
+	Stamina persa: 2
+	Prendi 0 frammenti dal demone 1
+
+Turno 2. Pandora: Stamina 3, Frammenti 0
+	Recupero stamina 11
+	Attacco su demone 2 riuscito
+	Stamina persa: 3
+	Prendi 6 frammenti dal demone 1
+	Prendi 0 frammenti dal demone 2
+
+Turno 3. Pandora: Stamina 11, Frammenti 6
+	Recupero stamina 5
+	Attacco su demone 3 riuscito
+	Stamina persa: 7
+	Prendi 1 frammenti dal demone 1
+	Prendi 5 frammenti dal demone 2
+	Prendi 8 frammenti dal demone 3
+
+Turno 4. Pandora: Stamina 9, Frammenti 20
+	Prendi 7 frammenti dal demone 1
+	Prendi 4 frammenti dal demone 2
+	Prendi 2 frammenti dal demone 3
+
+Turno 5. Pandora: Stamina 9, Frammenti 33
+	Prendi 3 frammenti dal demone 1
+	Prendi 5 frammenti dal demone 2
+	Prendi 5 frammenti dal demone 3
+
+Turno 6. Pandora: Stamina 9, Frammenti 46
+	Prendi 4 frammenti dal demone 1
+	Prendi 0 frammenti dal demone 2
+	Prendi 0 frammenti dal demone 3
+
+Turno 7. Pandora: Stamina 9, Frammenti 50
+	Prendi 7 frammenti dal demone 1
+	Prendi 10 frammenti dal demone 2
+	Prendi 0 frammenti dal demone 3
+
+Turno 8. Pandora: Stamina 9, Frammenti 67
+	Prendi 0 frammenti dal demone 1
+	Prendi 1 frammenti dal demone 2
+	Prendi 4 frammenti dal demone 3
+
+Turno 9. Pandora: Stamina 9, Frammenti 72
+	Recupero stamina 10
+	Attacco su demone 0 riuscito
+	Stamina persa: 16
+	Prendi 0 frammenti dal demone 0
+	Prendi 5 frammenti dal demone 1
+	Prendi 8 frammenti dal demone 2
+	Prendi 3 frammenti dal demone 3
+
+Turno 10. Pandora: Stamina 3, Frammenti 88
+	Prendi 10 frammenti dal demone 0
+	Prendi 7 frammenti dal demone 1
+	Prendi 3 frammenti dal demone 2
+	Prendi 9 frammenti dal demone 3
+
+Totale: 117 frammenti raccolti

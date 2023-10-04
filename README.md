@@ -55,3 +55,11 @@ Il file di output è valido se:
 - $T_{r} \in [1,T]$;
 - $N_{a} \in [0,100000]$;
 - $a_{i} \in [0,10000]$.
+
+## Record
+*00-example.txt* : 117 frammenti; 04/10/2023
+*01-the-cloud-abyss.txt*: 82074 frammenti; 04/10/2023
+*02-iot-island-of-terror.txt*: 5594738 frammenti; 04/10/2023
+*03-etheryum.txt*: 0 frammenti; 04/10/2023
+*04-the-desert-of-autonomous-machines.txt*: 5226692 frammenti; 04/10/2023
+*05-androids-armageddon.txt*: 2438340 frammenti; 04/10/2023
