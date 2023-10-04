@@ -1,4 +1,4 @@
-#include <math.h>
+#include <math.h>   // pow, exp
 #include <stdio.h>  // fprintf, fscanf, fopen, fclose
 #include <stdlib.h> // malloc, calloc, free
 
@@ -168,7 +168,7 @@ int *CalcolaOrdine(
     const PLAYER Pandora, const DEMON *Demoni, const int DimDemoni,
     const int TurniTotali)
 {
-    enum STATISTICHE_DEMONE {
+    enum STATO_DEMONE {
         DA_IGNORARE = -3,
         DA_SCEGLIERE = -2,
         PUNTEGGIO = -1,
@@ -184,18 +184,18 @@ int *CalcolaOrdine(
 
     struct INFO_STAMINA stamina = {Pandora.stamina, Pandora.maxStamina, 0};
     int *ordineFinale = malloc(DimDemoni * sizeof(int)), idx = 0,
-        *statisticheDemone = malloc(DimDemoni * sizeof(int)),
-        prossimoDemone = 0, ultimoDemone = 0;
+        *statoDemone = malloc(DimDemoni * sizeof(int)), prossimoDemone = 0,
+        ultimoDemone = 0;
     double *punteggi = malloc(DimDemoni * sizeof(double));
 
     for (int i = 0; i < DimDemoni; i++)
-        statisticheDemone[i] = DA_SCEGLIERE;
+        statoDemone[i] = DA_SCEGLIERE;
 
     for (int turno = 1; turno < TurniTotali; turno++) {
         // Aggiorna stamina
         for (int i = 0; i < DimDemoni; i++) {
-            if (statisticheDemone[i] == AGGIORNA_STAMINA) {
-                statisticheDemone[i] = DA_IGNORARE;
+            if (statoDemone[i] == AGGIORNA_STAMINA) {
+                statoDemone[i] = DA_IGNORARE;
                 stamina.corrente += CopiaDemoni[i].staminaRecuperata;
                 if (stamina.corrente > stamina.massima)
                     stamina.corrente = stamina.massima;
@@ -210,14 +210,14 @@ int *CalcolaOrdine(
                 listaAggiornata = 1;
             } else {
                 stamina.accumulata += CopiaDemoni[ultimoDemone].staminaPersa;
-                statisticheDemone[ultimoDemone] = -1;
+                statoDemone[ultimoDemone] = PUNTEGGIO;
                 ultimoDemone++;
             }
         }
 
         // Aggiorna i punteggi
         for (int i = prossimoDemone; i < ultimoDemone; i++) {
-            if (statisticheDemone[i] == PUNTEGGIO) {
+            if (statoDemone[i] == PUNTEGGIO) {
                 punteggi[i] =
                     CalcolaPunteggio(CopiaDemoni[i], TurniTotali - turno + 1);
             }
@@ -227,8 +227,7 @@ int *CalcolaOrdine(
         int max = -1;
         double punteggioMax = 0.0;
         for (int i = prossimoDemone; i < ultimoDemone; i++) {
-            if (statisticheDemone[i] == PUNTEGGIO &&
-                punteggi[i] > punteggioMax) {
+            if (statoDemone[i] == PUNTEGGIO && punteggi[i] > punteggioMax) {
                 max = i;
                 punteggioMax = punteggi[i];
             }
@@ -237,30 +236,29 @@ int *CalcolaOrdine(
         // Nessun demone scelto
         if (max != -1) {
             ordineFinale[idx++] = CopiaDemoni[max].idx;
-            statisticheDemone[max] = CopiaDemoni[max].turniPerRecuperoStamina;
+            statoDemone[max] = CopiaDemoni[max].turniPerRecuperoStamina;
             stamina.accumulata -= CopiaDemoni[max].staminaPersa;
             stamina.corrente -= CopiaDemoni[max].staminaPersa;
         }
 
         // Decrementa le statistiche
         for (int i = 0; i < DimDemoni; i++)
-            if (statisticheDemone[i] > 0) statisticheDemone[i]--;
+            if (statoDemone[i] > 0) statoDemone[i]--;
 
         // Sposta Prossimo Demone
-        while (statisticheDemone[prossimoDemone] == DA_IGNORARE)
+        while (statoDemone[prossimoDemone] == DA_IGNORARE)
             prossimoDemone++;
     }
 
     if (idx != DimDemoni) {
         for (int i = 0; i < DimDemoni; i++) {
-            if (statisticheDemone[i] == DA_SCEGLIERE ||
-                statisticheDemone[i] == PUNTEGGIO) {
+            if (statoDemone[i] == DA_SCEGLIERE || statoDemone[i] == PUNTEGGIO) {
                 ordineFinale[idx++] = CopiaDemoni[i].idx;
             }
         }
     }
 
-    free(statisticheDemone);
+    free(statoDemone);
     free(punteggi);
     free(CopiaDemoni);
     return ordineFinale;
