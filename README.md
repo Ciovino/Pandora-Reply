@@ -97,7 +97,7 @@ Se alla fine della simulazione ci sono demoni che non sono stati ancora selezion
 - *05-androids-armageddon.txt*: 2438340 frammenti;
 
 ### Riflessioni
-- Il sistema di punteggio non considera il numero effettivo di frammenti che un demone può dare, infatti demoni che danno 0 frammenti (come molti in *03-etheryum.txt*) restituiscono sempre 0 frammenti persi, andando a sfasare favorirli rispetto a chi perde anche 1 frammento.
+- Il sistema di punteggio non considera il numero effettivo di frammenti che un demone può dare, infatti demoni che danno 0 frammenti (20000+ in *03-etheryum.txt*) restituiscono sempre 0 frammenti persi, andando a favorirli rispetto a chi perde anche 1 frammento.
 
 ### Idee
 - Migliorare il calcolo del punteggio, facendo pesare il numero di frammenti collezionabili da un demone;
